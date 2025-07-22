@@ -22,7 +22,8 @@ if len(sys.argv) != 3:
 
 # Get the users path to evaluate the username and root directory
 current_path = os.getcwd()
-grandparent_path = "/".join(current_path.split("/")[:-1])
+# grandparent_path = "/".join(current_path.split("/")[:-1])
+grandparent_path = os.path.dirname(os.getcwd())  # 兼容windows和linux
 
 print("Looking for modules in : ", grandparent_path)
 

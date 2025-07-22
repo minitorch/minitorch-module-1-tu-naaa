@@ -7,7 +7,7 @@ from typing_extensions import Protocol
 # Central Difference calculation
 
 
-def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) -> Any:
+def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) -> Any:  
     r"""
     Computes an approximation to the derivative of `f` with respect to one arg.
 
@@ -23,7 +23,11 @@ def central_difference(f: Any, *vals: Any, arg: int = 0, epsilon: float = 1e-6) 
         An approximation of $f'_i(x_0, \ldots, x_{n-1})$
     """
     # TODO: Implement for Task 1.1.
-    raise NotImplementedError("Need to implement for Task 1.1")
+    # 求偏导
+    tmp_vals = list(vals)
+    tmp_vals[arg] += epsilon
+    return (f(*tmp_vals)-f(*vals))/epsilon
+    # raise NotImplementedError("Need to implement for Task 1.1")
 
 
 variable_count = 1
