@@ -153,7 +153,7 @@ class Scalar:
 
     # Variable elements for backprop
 
-    def accumulate_derivative(self, x: Any) -> None:
+    def accumulate_derivative(self, x: Any) -> None:  # 把不同路径传过来的梯度相加
         """
         Add `val` to the the derivative accumulated on this variable.
         Should only be called during autodifferentiation on leaf variables.
@@ -161,6 +161,7 @@ class Scalar:
         Args:
             x: value to be accumulated
         """
+        # e.g z = x*y + x*w - dz/dx = d(x*y)/dx + d(x*w)/dx
         assert self.is_leaf(), "Only leaf variables can have derivatives."
         if self.derivative is None:
             self.derivative = 0.0
@@ -178,14 +179,15 @@ class Scalar:
         assert self.history is not None
         return self.history.inputs
 
-    def chain_rule(self, d_output: Any) -> Iterable[Tuple[Variable, Any]]:
+    def chain_rule(self, d_output: Any) -> Iterable[Tuple[Variable, Any]]:  # (x, dL/dx) - dL/dx = dL/dz * dz/dx = d_output * grad_x
         h = self.history
         assert h is not None
         assert h.last_fn is not None
         assert h.ctx is not None
 
         # TODO: Implement for Task 1.3.
-        grads = h.last_fn.backward(h.ctx, d_output)
+        # ._backward函数定义在ScalarFunction类里，把各个function的.backward返回的结果包装成tuple
+        grads = h.last_fn._backward(h.ctx, d_output)  # z=h.last_fn(x1, x2, …) - grads = [dz/dx1, dz/dx2, …]
         result = []
         for (x, grad_x) in zip(h.inputs, grads):
             if x.is_constant():
