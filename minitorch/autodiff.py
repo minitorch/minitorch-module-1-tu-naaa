@@ -55,7 +55,7 @@ class Variable(Protocol):
         pass
 
 
-def topological_sort(variable: Variable) -> Iterable[Variable]:
+def topological_sort(variable: Variable) -> Iterable[Variable]:  # 计算图 - 有向无环图 -> 拓扑排序
     """
     Computes the topological order of the computation graph.
 
